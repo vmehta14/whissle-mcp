@@ -1,0 +1,2 @@
+[console_scripts]
+whissle-mcp = whissle_mcp.server:main

@@ -1,0 +1,135 @@
+Metadata-Version: 2.4
+Name: whissle-mcp
+Version: 0.1.0
+Summary: Whissle MCP Server
+Author-email: Your Name <your.email@example.com>
+Keywords: whissle,mcp,speech-to-text,translation,summarization
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: mcp[cli]>=1.6.0
+Requires-Dist: fastapi==0.109.2
+Requires-Dist: uvicorn==0.27.1
+Requires-Dist: python-dotenv==1.0.1
+Requires-Dist: pydantic>=2.6.1
+Requires-Dist: httpx==0.28.1
+Requires-Dist: whissle>=0.0.1
+Provides-Extra: dev
+Requires-Dist: pre-commit==3.6.2; extra == "dev"
+Requires-Dist: ruff==0.3.0; extra == "dev"
+Requires-Dist: fastmcp==0.4.1; extra == "dev"
+Requires-Dist: pytest==8.0.0; extra == "dev"
+Requires-Dist: pytest-cov==4.1.0; extra == "dev"
+Requires-Dist: twine==6.1.0; extra == "dev"
+Requires-Dist: build>=1.0.3; extra == "dev"
+
+# Whissle MCP Server
+
+Official Whissle [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol) server that enables interaction with powerful Speech-to-Text, Machine Translation, and Text Summarization APIs. This server allows MCP clients like [Claude Desktop](https://www.anthropic.com/claude), [Cursor](https://www.cursor.so), [Windsurf](https://codeium.com/windsurf), [OpenAI Agents](https://github.com/openai/openai-agents-python) and others to transcribe audio, translate text, and summarize content.
+
+## Quickstart with Claude Desktop
+
+1. Get your auth token from [Whissle](https://whissle.ai). There is a free tier available.
+2. Install `uv` (Python package manager), install with `curl -LsSf https://astral.sh/uv/install.sh | sh` or see the `uv` [repo](https://github.com/astral-sh/uv) for additional install methods.
+3. Go to Claude > Settings > Developer > Edit Config > claude_desktop_config.json to include the following:
+
+```json
+{
+  "mcpServers": {
+    "Whissle": {
+      "command": "uvx",
+      "args": ["whissle-mcp"],
+      "env": {
+        "WHISSLE_AUTH_TOKEN": "<insert-your-auth-token-here>"
+      }
+    }
+  }
+}
+```
+
+If you're using Windows, you will have to enable "Developer Mode" in Claude Desktop to use the MCP server. Click "Help" in the hamburger menu at the top left and select "Enable Developer Mode".
+
+## Other MCP clients
+
+For other clients like Cursor and Windsurf, run:
+1. `pip install whissle-mcp`
+2. `python -m whissle_mcp --auth-token={{PUT_YOUR_AUTH_TOKEN_HERE}} --print` to get the configuration. Paste it into appropriate configuration directory specified by your MCP client.
+
+That's it. Your MCP client can now interact with Whissle through these tools:
+
+## Example usage
+
+⚠️ Warning: Whissle credits are needed to use these tools.
+
+Try asking Claude:
+
+- "Transcribe this audio file and identify different speakers"
+- "Translate this text from English to Spanish"
+- "Summarize this long article"
+- "List all available speech recognition models"
+
+## Optional features
+
+You can add the `WHISSLE_MCP_BASE_PATH` environment variable to the `claude_desktop_config.json` to specify the base path MCP server should look for and output files specified with relative paths.
+
+## Contributing
+
+If you want to contribute or run from source:
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/whissle-mcp
+cd whissle-mcp
+```
+
+2. Create a virtual environment and install dependencies [using uv](https://github.com/astral-sh/uv):
+```bash
+uv venv
+source .venv/bin/activate
+uv pip install -e ".[dev]"
+```
+
+3. Copy `.env.example` to `.env` and add your Whissle auth token:
+```bash
+cp .env.example .env
+# Edit .env and add your auth token
+```
+
+4. Run the tests to make sure everything is working:
+```bash
+./scripts/test.sh
+# Or with options
+./scripts/test.sh --verbose --fail-fast
+```
+
+5. Install the server in Claude Desktop: `mcp install whissle_mcp/server.py`
+
+6. Debug and test locally with MCP Inspector: `mcp dev whissle_mcp/server.py`
+
+## Troubleshooting
+
+Logs when running with Claude Desktop can be found at:
+
+- **Windows**: `%APPDATA%\Claude\logs\mcp-server-whissle.log`
+- **macOS**: `~/Library/Logs/Claude/mcp-server-whissle.log`
+
+### Timeouts when using certain tools
+
+Certain Whissle API operations, like transcription and summarization, can take a long time to resolve. When using the MCP inspector in dev mode, you might get timeout errors despite the tool completing its intended task.
+
+This shouldn't occur when using a client like Claude.
+
+### MCP Whissle: spawn uvx ENOENT
+
+If you encounter the error "MCP Whissle: spawn uvx ENOENT", confirm its absolute path by running this command in your terminal:
+
+```bash
+which uvx
+```
+
+Once you obtain the absolute path (e.g., `/usr/local/bin/uvx`), update your configuration to use that path (e.g., `"command": "/usr/local/bin/uvx"`). This ensures that the correct executable is referenced. 

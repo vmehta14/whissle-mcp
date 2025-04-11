@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+      "Whissle": {
+        "command": "/Users/varunmehta/whissle-git/whissle_mcp/venv/bin/python",
+        "args": [
+          "/Users/varunmehta/whissle-git/whissle_mcp/whissle_mcp/server.py"
+        ],
+        "env": {
+          "WHISSLE_AUTH_TOKEN": "d7293d79d38f4394"
+        }
+      }
+    }
+   
+  
+  }

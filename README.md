@@ -40,15 +40,38 @@ A Python-based server that provides access to Whissle API endpoints for speech-t
 4. Set up environment variables:
    Create a `.env` file in the project root with the following content:
    ```
-   WHISSLE_AUTH_TOKEN=your_auth_token_here
+   WHISSLE_AUTH_TOKEN=insert_auth_token_here  # Replace with your actual Whissle API token
    WHISSLE_MCP_BASE_PATH=/path/to/your/base/directory
    ```
+   ⚠️ **Important**: Never commit your actual token to the repository. The `.env` file is included in `.gitignore` to prevent accidental commits.
 
+5. Configure Claude Integration:
+   Copy `claude_config.example.json` to `claude_config.json` and update the paths:
+   ```json
+   {
+       "mcpServers": {
+           "Whissle": {
+               "command": "/path/to/your/venv/bin/python",
+               "args": [
+                   "/path/to/whissle_mcp/server.py"
+               ],
+               "env": {
+                   "WHISSLE_AUTH_TOKEN": "insert_auth_token_here"
+               }
+           }
+       }
+   }
+   ```
+   - Replace `/path/to/your/venv/bin/python` with the actual path to your Python interpreter in the virtual environment
+   - Replace `/path/to/whissle_mcp/server.py` with the actual path to your server.py file
 ## Configuration
 
 ### Environment Variables
 
 - `WHISSLE_AUTH_TOKEN`: Your Whissle API authentication token (required)
+  - This is a sensitive credential that should never be shared or committed to version control
+  - Contact your administrator to obtain a valid token
+  - Store it securely in your local `.env` file
 - `WHISSLE_MCP_BASE_PATH`: Base directory for file operations (optional, defaults to user's Desktop)
 
 ### Supported Audio Formats

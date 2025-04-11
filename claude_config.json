@@ -1,15 +1,22 @@
 {
     "mcpServers": {
       "Whissle": {
-        "command": "/Users/varunmehta/whissle-git/whissle_mcp/venv/bin/python",
+        // Path to your Python interpreter in the virtual environment
+        // Replace with your actual venv path: <project_root>/venv/bin/python
+        "command": "/path/to/your/venv/bin/python",
+        
+        // Path to the server.py file
+        // Replace with your actual path: <project_root>/whissle_mcp/server.py
         "args": [
-          "/Users/varunmehta/whissle-git/whissle_mcp/whissle_mcp/server.py"
+          "/path/to/whissle_mcp/server.py"
         ],
+        
+        // Environment variables required by the server
         "env": {
-          "WHISSLE_AUTH_TOKEN": "d7293d79d38f4394"
+          // Your Whissle API authentication token
+          // Replace with your actual token from .env file
+          "WHISSLE_AUTH_TOKEN": "insert_auth_token_here"
         }
       }
     }
-   
-  
-  }
+}

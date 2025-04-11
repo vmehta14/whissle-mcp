@@ -1,0 +1,13 @@
+{
+    "mcpServers": {
+        "Whissle": {
+            "command": "/path/to/your/venv/bin/python",
+            "args": [
+                "/path/to/whissle_mcp/server.py"
+            ],
+            "env": {
+                "WHISSLE_AUTH_TOKEN": "insert_auth_token_here"
+            }
+        }
+    }
+} 
